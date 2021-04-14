@@ -1,0 +1,12 @@
+*.py[oc]
+**/__pycache__
+
+venv
+
+.idea
+.vscode
+.*.swp
+
+# api keys
+config.ini
+*.session
