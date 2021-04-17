@@ -3,7 +3,13 @@ import re
 
 from pyrogram import Client, filters
 
-app = Client(os.environ.get('SESSION', 'drdilyor'))
+session = os.environ.get('SESSION', 'drdilyor')
+if os.environ.get('MODE') == 'heroku':
+    app = Client(session, os.environ['API_ID'], os.environ['API_HASH'])
+else:
+    # take api id and hash from config.ini
+    app = Client(session)
+
 
 omuc_group = (
     filters.chat('uzbekcoderslive')
