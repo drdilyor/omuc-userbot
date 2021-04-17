@@ -1,8 +1,9 @@
+import os
 import re
 
 from pyrogram import Client, filters
 
-app = Client('drdilyor')
+app = Client(os.environ.get('SESSION', 'drdilyor'))
 
 omuc_group = (
     filters.chat('uzbekcoderslive')
