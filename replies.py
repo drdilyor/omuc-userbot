@@ -45,9 +45,10 @@ re_ping = '\
 
 reply_rule(re_ping, '**Pong!!**')
 
-re_hello = '\
-^salom(?:\s+hammaga)?$|\
-^(?:as)?salomu?\s+al[ae][yi]kum$\
+everyone = '(?:\s+(?:hammaga|barchaga))?'
+re_hello = f'\
+^salom{everyone}$|\
+^(?:as)?salomu?\s+al[ae][yi]kum{everyone}$\
 '
 reply_rule(re_hello, '**Salom**')
 
