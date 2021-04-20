@@ -6,7 +6,7 @@
 name    | example                        | reply
 --------|--------------------------------|----------
 Hello   | `Salom`, `Assalomu alaykum`    | **Salom**
-aloo    | `alo`, 'AloOOooOOoo`, `kim bor`| **Pong!!**
+aloo    | `alo`, `AloOOooOOoo`, `kim bor`| **Pong!!**
 
 ## Bang commands
 
