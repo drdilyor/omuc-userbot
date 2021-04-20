@@ -40,7 +40,7 @@ def reply_rule(regex, reply_message, max_per_day=3):
 
 re_ping = '\
 ^alo+|\
-^kim bo+r|\
+^kim bo+r(?:\s+.{,10})?$|\
 ^foo$'
 
 reply_rule(re_ping, '**Pong!!**')
