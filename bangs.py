@@ -16,29 +16,31 @@ def google(term):
     if term:
         return 'https://google.com/search?q=' + term.replace(' ', '+')
 
-zalgo = Z̵̠̓a̸͉̅l̶̺̎g̵̞͝o̵͚̿()
-zalgo.numAccentsUp = (3, 8)
-zalgo.numAccentsDown = (1, 3)
-zalgo.numAccentsMiddle = (0, 0)
-zalgo.maxAccentsPerLetter = 6
-
 @command('z')
 @command('zalgo')
-def zalgo_command(text):
+def zalgo_command(text, zalgo=Z̵̠̓a̸͉̅l̶̺̎g̵̞͝o̵͚̿(
+    numAccentsUp=(3, 8),
+    numAccentsDown=(3, 8),
+    numAccentsMiddle=(0, 1),
+    maxAccentsPerLetter=8)
+):
     if text:
-        # some zalgos are changing the width of the character on telegram
-        # and spaces are getting less visible
         return zalgo.zalgofy(text)
 
-hecomes = Z̵̠̓a̸͉̅l̶̺̎g̵̞͝o̵͚̿()
-hecomes.numAccentsUp = (5, 15)
-hecomes.numAccentsDown = (3, 10)
-hecomes.numAccentsMiddle = (2, 7)
-hecomes.maxAccentsPerLetter = 20
+@command('z0')
+def zalgo_zero(text, zalgo=Z̵̠̓a̸͉̅l̶̺̎g̵̞͝o̵͚̿(maxAccentsPerLetter=2)):
+    if text:
+        return zalgo.zalgofy(text)
+
 
 @command('hc')
 @command('hecomes')
-def zalgo_hecomes(text):
+def zalgo_hecomes(text, hecomes=Z̵̠̓a̸͉̅l̶̺̎g̵̞͝o̵͚̿(
+    numAccentsUp=(8, 10),
+    numAccentsDown=(8, 10),
+    numAccentsMiddle=(10, 15),
+    maxAccentsPerLetter=99)
+):
     if text:
         return hecomes.zalgofy(text)
 
