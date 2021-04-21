@@ -31,10 +31,10 @@ def zalgo_command(text):
         return zalgo.zalgofy(text)
 
 hecomes = Z̵̠̓a̸͉̅l̶̺̎g̵̞͝o̵͚̿()
-zalgo.numAccentsUp = (5, 15)
-zalgo.numAccentsDown = (3, 10)
-zalgo.numAccentsMiddle = (2, 7)
-zalgo.maxAccentsPerLetter = 20
+hecomes.numAccentsUp = (5, 15)
+hecomes.numAccentsDown = (3, 10)
+hecomes.numAccentsMiddle = (2, 7)
+hecomes.maxAccentsPerLetter = 20
 
 @command('hc')
 @command('hecomes')
