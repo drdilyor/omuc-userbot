@@ -1,3 +1,5 @@
+import re
+
 from pyrogram import filters
 from zalgo import zalgo as Z̵̠̓a̸͉̅l̶̺̎g̵̞͝o̵͚̿
 
@@ -44,7 +46,8 @@ def zalgo_hecomes(text, hecomes=Z̵̠̓a̸͉̅l̶̺̎g̵̞͝o̵͚̿(
     if text:
         return hecomes.zalgofy(text)
 
-@app.on_message(filters.me & filters.text & filters.regex('^!(\w+)(?:\s+(.*))?$'))
+
+@app.on_message(filters.me & filters.text & filters.regex('^!(\w+)(?:\s+(.*))?$', re.DOTALL))
 def on_command(app, message):
     m = message.matches[0]
     user_command, arg = m.group(1), m.group(2)
