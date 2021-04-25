@@ -50,7 +50,7 @@ re_hello = f'\
 ^salom{everyone}$|\
 ^(?:as)?salomu?\s+al[ae][yi]kum{everyone}$\
 '
-reply_rule(re_hello, '**Salom**')
+#reply_rule(re_hello, '**Salom**')
 
 def run_jobs():
     while True:
