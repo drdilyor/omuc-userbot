@@ -58,4 +58,3 @@ def on_command(app, message):
     result = f(arg)
     if result:
         message.edit_text(result)
-
