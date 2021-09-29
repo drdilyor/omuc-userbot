@@ -10,3 +10,7 @@ venv
 # api keys
 config.ini
 *.session
+*.session-journal
+
+# my local
+/ml
