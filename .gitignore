@@ -14,3 +14,6 @@ config.ini
 
 # my local
 /ml
+
+# db
+db.sqlite3

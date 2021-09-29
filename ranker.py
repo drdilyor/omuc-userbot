@@ -5,7 +5,7 @@ import re
 from Levenshtein import distance  # noqa
 
 log = logging.getLogger(__name__)
-log.setLevel(logging.DEBUG)
+log.setLevel(logging.INFO)
 
 
 def get_score(text: str):
@@ -87,6 +87,16 @@ def get_score(text: str):
             ],
             'value': 0.0,
         },
+        'javob': {
+            'weight': 4,
+            'in_text': [
+                'javob',
+                'javoblari',
+                'javobi',
+                'javobini',
+            ],
+            'value': 0.0,
+        },
         'arzon': {
             'weight': 3,
             'in_text': [
@@ -144,6 +154,7 @@ def get_score(text: str):
         },
     }
 
+    print(text)
     text_words = re.findall(r'[a-zA-Z0-9💯]+', text)
     i = 0
     log.debug(f'{text_words=}')
@@ -152,7 +163,7 @@ def get_score(text: str):
             current_max = 0.0
             for susword in sus['in_text']:
                 sus_word_count = susword.count(' ') + 1
-                text_word = ' '.join(text_words[i:i + sus_word_count])
+                text_word = ' '.join(text_words[i:i + sus_word_count]).casefold()
                 log.debug(f'{text_word=}')
                 log.debug(f'{susword=}')
                 log.debug(f'{sus_word_count=}')

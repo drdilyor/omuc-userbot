@@ -1,3 +1,4 @@
 Pyrogram==1.2.8
 TgCrypto==1.2.2
 python-Levenshtein
+tortoise-orm
