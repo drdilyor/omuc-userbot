@@ -15,5 +15,7 @@ config.ini
 # my local
 /ml
 
+start.sh
+
 # db
-db.sqlite3
+db.sqlite3*
