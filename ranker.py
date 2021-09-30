@@ -4,6 +4,8 @@ import re
 
 from Levenshtein import distance  # noqa
 
+from util import normalize_uzbek
+
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
@@ -154,8 +156,8 @@ def get_score(text: str):
         },
     }
 
-    print(text)
-    text_words = re.findall(r'[a-zA-Z0-9💯]+', text)
+    text = normalize_uzbek(text)
+    text_words = re.findall(r'[a-z0-9💯]+', text)
     i = 0
     log.debug(f'{text_words=}')
     while i < len(text_words):

@@ -7,6 +7,7 @@ from pyrogram.types import Message
 
 from app import app as app_, mod_group
 from db import Colorlist
+from util import normalize_uzbek
 
 colorlist: list['Colorlist']
 
@@ -18,27 +19,36 @@ async def init():
 
 
 async def on_message(app: Client, message: Message):
-    text = ''.join(re.findall('[ a-z0-9]', message.text.casefold()))
+    text = ''.join(re.findall('[ a-z0-9]', normalize_uzbek(message.text)))
     for i in colorlist:
         if distance(i.text, text) <= 2:
             if i.is_black:
                 if await try_blocking(app, message):
                     await message.reply_text('Blacklisted message occured one more time.')
-                else:
-                    await notify_no_perms(app, message)
             return True
     return False
 
 
-async def try_blocking(app: Client, message: Message):
-    if not (await message.chat.get_member(message.from_user.id)).can_restrict_members:
-        await message.reply("You don't have enough permissions: restrict_members.")
+async def check_permissions(message: Message) -> bool:
+    member = await message.chat.get_member(message.from_user.id)
+    if member.can_restrict_members and member.can_delete_messages:
         return True
+    else:
+        await message.reply("You don't have enough permissions.\n"
+                            "Permissions required: can_restrict_members, "
+                            "can_delete_messages.")
+        return True
+
+
+async def try_blocking(app: Client, message: Message):
+    if not check_permissions(message):
+        return False
     try:
         await app.kick_chat_member(message.chat.id, message.from_user.id)
         await message.delete()
         await app.send_message(message.chat.id, 'Successfully blocked.')
     except Exception:  # noqa
+        await notify_no_perms(app, message)
         return False
     else:
         return True
@@ -53,12 +63,13 @@ async def notify_no_perms(app: Client, message: Message):
 @app_.on_message(filters.regex('^!black$'))
 async def on_black(app: Client, message: Message):
     if await add_to_list(message, True):
-        if not await try_blocking(app, message.reply_to_message):
-            await notify_no_perms(app, message)
+        await try_blocking(app, message.reply_to_message)
 
 
 @app_.on_message(filters.regex('^!white$'))
 async def on_white(_app: Client, message: Message):
+    if not check_permissions(message):
+        return
     await add_to_list(message, False)
 
 
