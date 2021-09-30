@@ -1,4 +1,6 @@
 """I called it so because I couldn't decide between 'blacklist' and 'whitelist'"""
+import json
+import os
 import re
 
 from Levenshtein import distance  # noqa
@@ -78,7 +80,7 @@ async def add_to_list(message: Message, is_black: bool):
         await message.reply_text('Must reply to a text message!')
         return False
     text = message.reply_to_message.text
-    if text in ('!black', '!white'):
+    if text in ('!black', '!white', '!list'):
         await message.reply_text('Cannot blacklist a command!')
         return False
     new = Colorlist(text=text, is_black=is_black)
@@ -86,3 +88,19 @@ async def add_to_list(message: Message, is_black: bool):
     colorlist.append(new)
     await message.reply('Added successfully.')
     return True
+
+
+@app_.on_message(~filters.chat(mod_group) & filters.regex('^!list$'))
+async def on_notmod_list(_, message):
+    message.reply_text('Must be used in the mod group!')
+
+@app_.on_message(filters.chat(mod_group) & filters.regex('^!list$'))
+async def on_list(_app: Client, message: Message):
+    with open('tmp.json', 'w') as f:
+        json.dump({'blacklist': [{'id': i.id, 'text': i.text}
+                                 for i in colorlist if i.is_black],
+                   'whitelist': [{'id': i.id, 'text': i.text}
+                                 for i in colorlist if not i.is_black]}, f)
+    with open('tmp.json', 'rb') as f:
+        await message.reply_document(f)
+    os.remove('tmp.json')

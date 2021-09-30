@@ -14,5 +14,6 @@ async def close():
 
 
 class Colorlist(Model):
+    id = fields.IntField(pk=True)
     text = fields.CharField(4096)
     is_black = fields.BooleanField()
