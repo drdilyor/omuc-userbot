@@ -5,6 +5,7 @@ import re
 
 from Levenshtein import distance  # noqa
 from pyrogram import Client, filters
+from pyrogram.errors import SlowmodeWait
 from pyrogram.types import Message
 
 from app import app as app_, mod_group
@@ -64,18 +65,18 @@ async def notify_no_perms(app: Client, message: Message):
 
 @app_.on_message(filters.regex('^!black$'))
 async def on_black(app: Client, message: Message):
-    if await add_to_list(message, True):
+    if await add_to_list(app, message, True):
         await try_blocking(app, message.reply_to_message)
 
 
 @app_.on_message(filters.regex('^!white$'))
-async def on_white(_app: Client, message: Message):
+async def on_white(app: Client, message: Message):
     if not check_permissions(message):
         return
-    await add_to_list(message, False)
+    await add_to_list(app, message, False)
 
 
-async def add_to_list(message: Message, is_black: bool):
+async def add_to_list(app: Client, message: Message, is_black: bool):
     if message.reply_to_message is None or message.reply_to_message.text is None:
         await message.reply_text('Must reply to a text message!')
         return False
@@ -86,7 +87,12 @@ async def add_to_list(message: Message, is_black: bool):
     new = Colorlist(text=text, is_black=is_black)
     await new.save()
     colorlist.append(new)
-    await message.reply('Added successfully.')
+    try:
+        await message.reply('Added successfully.')
+    except SlowmodeWait:
+        await notify_no_perms(app, message)
+        return False
+
     return True
 
 

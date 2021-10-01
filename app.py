@@ -13,7 +13,6 @@ omuc_group = (
     filters.chat('uzbekcoderslive')
     | filters.chat('fullstack_omuc')
     | filters.chat('frontend_omuc')
-    | filters.chat(-560095473)  # test group
 )
 mod_group = -1001238351183
 super_user = 1044136353
