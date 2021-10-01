@@ -24,8 +24,25 @@ def get_score(text: str):
             ],
             'value': 0.0,
         },
-        'sotish': {
+        'laboratoriya': {
             'weight': 5,
+            'in_text': [
+                'lab',
+                'laboratoriya',
+                'labratoriya',
+                'laboratoriyasi',
+                'laboratoriyasini',
+                'laboratoriyasining',
+                'laboratoriyadan',
+                'labini',
+                'labning',
+                'labining',
+                'labdan',
+            ],
+            'value': 0.0,
+        },
+        'sotish': {
+            'weight': 3,
             'in_text': [
                 'sotiladi',
                 'sotamiz',
@@ -35,7 +52,7 @@ def get_score(text: str):
             'value': 0.0,
         },
         'olib_beramiz': {
-            'weight': 5,
+            'weight': 3,
             'in_text': [
                 'olib beramiz',
                 'oberamiz',
@@ -46,7 +63,7 @@ def get_score(text: str):
             'value': 0.0,
         },
         'qanday_oladi': {
-            'weight': 5,
+            'weight': 3,
             'in_text': [
                 *[
                     f'{i} {j}'
@@ -72,25 +89,8 @@ def get_score(text: str):
             ],
             'value': 0.0,
         },
-        'laboratoriya': {
-            'weight': 5,
-            'in_text': [
-                'lab',
-                'laboratoriya',
-                'labratoriya',
-                'laboratoriyasi',
-                'laboratoriyasini',
-                'laboratoriyasining',
-                'laboratoriyadan',
-                'labini',
-                'labning',
-                'labining',
-                'labdan',
-            ],
-            'value': 0.0,
-        },
         'javob': {
-            'weight': 4,
+            'weight': 3,
             'in_text': [
                 'javob',
                 'javoblari',
@@ -100,7 +100,7 @@ def get_score(text: str):
             'value': 0.0,
         },
         'arzon': {
-            'weight': 3,
+            'weight': 2,
             'in_text': [
                 'arzon',
                 'arzan',
@@ -110,7 +110,7 @@ def get_score(text: str):
             'value': 0.0,
         },
         'narxi': {
-            'weight': 3,
+            'weight': 2,
             'in_text': [
                 'narx',
                 'narxlar',
@@ -121,7 +121,7 @@ def get_score(text: str):
             'value': 0.0,
         },
         'kelishamiz': {
-            'weight': 3,
+            'weight': 1,
             'in_text': [
                 'kelishamiz',
                 'kelishilgan',
@@ -130,7 +130,7 @@ def get_score(text: str):
             'value': 0.0,
         },
         'kerak': {
-            'weight': 3,
+            'weight': 2,
             'in_text': [
                 'kerak',
                 'keray',
@@ -141,7 +141,7 @@ def get_score(text: str):
             'value': 0.0,
         },
         'emoji_100': {
-            'weight': 3,
+            'weight': 2,
             'in_text': ['💯'],
             'value': 0.0,
         },
@@ -184,9 +184,18 @@ def get_score(text: str):
 
         i += 1
 
+    if keywords['cert']['value'] == 0 and keywords['laboratoriya']['value'] == 0:
+        return 0
+
     sum_weighted = 0
     for sus in keywords.values():
         sum_weighted += sus['weight'] * sus['value']
+
+    if len(text) > 128:
+        return sum_weighted / 1.5
+
+    if len(text) > 255:
+        return sum_weighted / 2
 
     log.debug(json.dumps({k: v['value'] for k, v in keywords.items()}))
     log.info(f'{sum_weighted=} {text=}')
